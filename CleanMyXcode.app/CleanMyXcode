@@ -24,3 +24,6 @@ rm -rf ~/Library/Developer/CoreSimulator/Caches/*
         display dialog "Xcode limpo com sucesso!"
     end tell
 EOF
+
+# show folder size:
+# total_size=`du -hcs ~/Library/Developer/Xcode/Archives/ | cut -f 1 | head -n 1` 
