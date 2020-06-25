@@ -1,27 +1,23 @@
 #!/bin/bash
 
 main() {
-
+    # get folders sizes
     archives_size=$(echo "scale=2;$(du -hcsm ~/Desktop/Developer/Xcode/Archives/ | cut -f 1 | head -n 1)/1000" | bc)
-    op1="Archives (${archives_size//[[:blank:]]/} GB)"
-
     devices_size=$(echo "scale=2;$(du -hcsm ~/Desktop/Developer/CoreSimulator/Devices/ | cut -f 1 | head -n 1)/1000" | bc)
-    op2="Devices data (${devices_size//[[:blank:]]/} GB)"
-
     builds_size=$(echo "scale=2;$(du -hcsm ~/Desktop/Developer/Xcode/DerivedData/ | cut -f 1 | head -n 1)/1000" | bc)
-    op3="Builds data (${builds_size//[[:blank:]]/} GB)"
-
     logs_size=$(echo "scale=2;$(du -hcsm ~/Desktop/Developer/Xcode/iOS\ DeviceSupport/ | cut -f 1 | head -n 1)/1000" | bc)
-    op4="iOS logs (${logs_size//[[:blank:]]/} GB)"
-
     cache_size=$(echo "scale=2;$(du -hcsm ~/Desktop/Developer/CoreSimulator/Caches/ | cut -f 1 | head -n 1)/1000" | bc)
-    op5="Simulators cache (${cache_size//[[:blank:]]/} GB)"
-
-    sum=2500
     total_size=$(echo "scale=2;$archives_size+$devices_size+$builds_size+$logs_size+$cache_size" | bc)
+
+    # menu options
+    op1="Archives (${archives_size//[[:blank:]]/} GB)"
+    op2="Devices data (${devices_size//[[:blank:]]/} GB)"
+    op3="Builds data (${builds_size//[[:blank:]]/} GB)"
+    op4="iOS logs (${logs_size//[[:blank:]]/} GB)"
+    op5="Simulators cache (${cache_size//[[:blank:]]/} GB)"
     op6="All (${total_size//[[:blank:]]/} GB)"
 
-
+    # loop menu
     PS3='Which one do you want to clean? '
     COLUMNS=1
     options=("$op1" "$op2" "$op3" "$op4" "$op5" "$op6" "Quit")
