@@ -1,29 +1,23 @@
 #!/bin/bash
 
+# Change "Desktop" to "Library" 
+
 # Deleta archives de deploy (geralmente gerados antes de publicar na loja)
-#rm -rf ~/Library/Developer/Xcode/Archives/*
+rm -rf ~/Desktop/Developer/Xcode/Archives/*
 
 # Desinstala simuladores: desinstala apps, remove dados salvos localmente e restaura configurações de fábrica
-for folder in ~/Library/Developer/CoreSimulator/Devices/*; do
+for folder in ~/Desktop/Developer/CoreSimulator/Devices/*; do
     [ -d $folder/data ] && rm -rf $folder/data/*
 done
 
 # Dados gerados durante as builds
-rm -rf ~/Library/Developer/Xcode/DerivedData
+rm -rf ~/Desktop/Developer/Xcode/DerivedData
 
 # Logs gerados para cada versão do iOS
-rm -rf ~/Library/Developer/Xcode/iOS\ DeviceSupport/*
+rm -rf ~/Desktop/Developer/Xcode/iOS\ DeviceSupport/*
 
 # Caches dos simuladores
-rm -rf ~/Library/Developer/CoreSimulator/Caches/*
-
-# Exibe mensagem ao final (precisa autorizar no macOS)
-/usr/bin/osascript <<-EOF
-    tell application "System Events"
-        activate
-        display dialog "Xcode limpo com sucesso!"
-    end tell
-EOF
+rm -rf ~/Desktop/Developer/CoreSimulator/Caches/*
 
 # show folder size:
 # total_size=`du -hcs ~/Library/Developer/Xcode/Archives/ | cut -f 1 | head -n 1` 
