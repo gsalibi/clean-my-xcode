@@ -1,25 +1,28 @@
 #!/bin/bash
 
 main() {
-    archives_size=$(du -hcs ~/Desktop/Developer/Xcode/Archives/ | cut -f 1 | head -n 1)
-    op1="Remove archives (${archives_size//[[:blank:]]/})"
 
-    devices_size=$(du -hcs ~/Desktop/Developer/CoreSimulator/Devices/ | cut -f 1 | head -n 1)
-    op2="Devices data (${devices_size//[[:blank:]]/})"
+    archives_size=$(echo "scale=2;$(du -hcsm ~/Desktop/Developer/Xcode/Archives/ | cut -f 1 | head -n 1)/1000" | bc)
+    op1="Archives (${archives_size//[[:blank:]]/} GB)"
 
-    builds_size=$(du -hcs ~/Desktop/Developer/Xcode/DerivedData | cut -f 1 | head -n 1)
-    op3="Builds data (${builds_size//[[:blank:]]/})"
+    devices_size=$(echo "scale=2;$(du -hcsm ~/Desktop/Developer/CoreSimulator/Devices/ | cut -f 1 | head -n 1)/1000" | bc)
+    op2="Devices data (${devices_size//[[:blank:]]/} GB)"
 
-    logs_size=$(du -hcs ~/Desktop/Developer/Xcode/iOS\ DeviceSupport/ | cut -f 1 | head -n 1)
-    op4="iOS logs (${logs_size//[[:blank:]]/})"
+    builds_size=$(echo "scale=2;$(du -hcsm ~/Desktop/Developer/Xcode/DerivedData/ | cut -f 1 | head -n 1)/1000" | bc)
+    op3="Builds data (${builds_size//[[:blank:]]/} GB)"
 
-    cache_size=$(du -hcs ~/Desktop/Developer/CoreSimulator/Caches/ | cut -f 1 | head -n 1)
-    op5="Simulators cache (${cache_size//[[:blank:]]/})"
+    logs_size=$(echo "scale=2;$(du -hcsm ~/Desktop/Developer/Xcode/iOS\ DeviceSupport/ | cut -f 1 | head -n 1)/1000" | bc)
+    op4="iOS logs (${logs_size//[[:blank:]]/} GB)"
 
-    op6="All"
+    cache_size=$(echo "scale=2;$(du -hcsm ~/Desktop/Developer/CoreSimulator/Caches/ | cut -f 1 | head -n 1)/1000" | bc)
+    op5="Simulators cache (${cache_size//[[:blank:]]/} GB)"
+
+    sum=2500
+    total_size=$(echo "scale=2;$archives_size+$devices_size+$builds_size+$logs_size+$cache_size" | bc)
+    op6="All (${total_size//[[:blank:]]/} GB)"
 
 
-    PS3='What do you want to clean?'
+    PS3='Which one do you want to clean? '
     COLUMNS=1
     options=("$op1" "$op2" "$op3" "$op4" "$op5" "$op6" "Quit")
     select opt in "${options[@]}"; do
@@ -55,35 +58,46 @@ main() {
 }
 
 # Deleta archives de deploy (geralmente gerados antes de publicar na loja)
+# if you want to be able to debug deployed versions of your App, you shouldn’t delete the archives. Xcode will manage of archives and creates new file when new build is archived.
 remove_archives() {
-    echo $total_size
+    echo "Cleaning archives..."
     rm -rf ~/Desktop/Developer/Xcode/Archives/*
+    echo "$archives_size GB removed."
+    archives_size=0
 }
 
 # Desinstala simuladores: desinstala apps, remove dados salvos localmente e restaura configurações de fábrica
 remove_devices_data() {
-    echo $total_size
+    echo "Cleaning devices data..."
     for folder in ~/Desktop/Developer/CoreSimulator/Devices/*; do
         [ -d $folder/data ] && rm -rf $folder/data/*
     done
+    echo "$devices_size GB removed."
+    devices_size=0
 }
 
 # Dados gerados durante as builds
 remove_builds_data() {
-    echo $total_size
+    echo "Cleaning builds data..."
     rm -rf ~/Desktop/Developer/Xcode/DerivedData/*
+    echo "$archives_size GB removed."
+    archives_size=0
 }
 
 # Logs gerados para cada versão do iOS
 remove_ios_logs() {
-    echo $total_size
+    echo "Cleaning iOS logs..."
     rm -rf ~/Desktop/Developer/Xcode/iOS\ DeviceSupport/*
+    echo "$logs_size GB removed."
+    logs_size=0
 }
 
 # Caches dos simuladores
 remove_simulators_cache() {
-    echo $total_size
+    echo "Cleaning simulators cache..."
     rm -rf ~/Desktop/Developer/CoreSimulator/Caches/*
+    echo "$cache_size GB removed."
+    cache_size=0
 }
 
 main "$@"
