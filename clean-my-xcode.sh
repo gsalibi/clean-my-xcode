@@ -1,10 +1,7 @@
 #!/bin/bash
 
-# xcrun simctl list (NO XCODE: WINDOWS->DEVICES AND SIMULATORS ou ⇧⌘2)
-# xcrun simctl delete unavailable
-
 main() {
-    # get folders sizes
+    # get folder sizes
     logs_size=$(echo "scale=2;$(du -hcsm ~/Library/Developer/Xcode/iOS\ DeviceSupport/ | cut -f 1 | head -n 1)/1000" | bc)
     archives_size=$(echo "scale=2;$(du -hcsm ~/Library/Developer/Xcode/Archives/ | cut -f 1 | head -n 1)/1000" | bc)
     builds_size=$(echo "scale=2;$(du -hcsm ~/Library/Developer/Xcode/DerivedData/ | cut -f 1 | head -n 1)/1000" | bc)
@@ -58,7 +55,7 @@ main() {
 }
 
 
-# Logs gerados para cada versão do iOS
+# debug symbols for each iOS version
 clean_device_support() {
     echo "Cleaning iOS logs..."
     rm -rf ~/Library/Developer/Xcode/iOS\ DeviceSupport/*
@@ -66,8 +63,7 @@ clean_device_support() {
     logs_size=0
 }
 
-# Deleta archives de deploy (geralmente gerados antes de publicar na loja)
-# if you want to be able to debug deployed versions of your App, you shouldn’t delete the archives. Xcode will manage of archives and creates new file when new build is archived.
+# archives created from app builds
 clean_archives() {
     echo "Cleaning archives..."
     rm -rf ~/Library/Developer/Xcode/Archives/*
@@ -75,7 +71,7 @@ clean_archives() {
     archives_size=0
 }
 
-# Dados gerados durante as builds
+# intermediate build results, works as a cache 
 clean_derived_data() {
     echo "Cleaning builds data..."
     rm -rf ~/Library/Developer/Xcode/DerivedData/*
@@ -83,7 +79,7 @@ clean_derived_data() {
     archives_size=0
 }
 
-# Desinstala simuladores: desinstala apps, remove dados salvos localmente e restaura configurações de fábrica
+# local simulator data: remove apps and local data
 clean_devices_data() {
     echo "Cleaning devices data..."
     for folder in ~/Library/Developer/CoreSimulator/Devices/*; do
@@ -93,7 +89,7 @@ clean_devices_data() {
     devices_size=0
 }
 
-# Caches dos simuladores
+# simulator caches
 clean_simulators_cache() {
     echo "Cleaning simulators cache..."
     rm -rf ~/Library/Developer/CoreSimulator/Caches/*
