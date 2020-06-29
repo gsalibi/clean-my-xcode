@@ -1,8 +1,8 @@
 #!/bin/bash
 
 main() {
-    echo "Calculating space that can be freed up..."
     # get folder sizes
+    echo "Calculating space that can be freed up..."
     logs_size=$(echo "scale=2;$(du -hcsm ~/Library/Developer/Xcode/iOS\ DeviceSupport/ | cut -f 1 | head -n 1)/1000" | bc)
     archives_size=$(echo "scale=2;$(du -hcsm ~/Library/Developer/Xcode/Archives/ | cut -f 1 | head -n 1)/1000" | bc)
     builds_size=$(echo "scale=2;$(du -hcsm ~/Library/Developer/Xcode/DerivedData/ | cut -f 1 | head -n 1)/1000" | bc)
