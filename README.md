@@ -1,10 +1,9 @@
 # Clean My Xcode
 > A simple Shell script that cleans your Xcode
 
-Xcode is known to consume large amounts of disk space. This tends to get worse quickly over time, as it keeps even old files created for simulators and past iOS versions, which are not even installed anymore.
-
 <p align="center"><img src="images/head_image.png" alt="Clean My Xcode"></p>
 
+Xcode is known to consume large amounts of disk space. This tends to get worse quickly over time, as it keeps even old files created for simulators and past iOS versions, which are not even installed anymore.
 
 ## Usage example
 
