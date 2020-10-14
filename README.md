@@ -7,7 +7,7 @@ Xcode is known to consume large amounts of disk space. This tends to get worse q
 
 ## Usage example
 
-Once the clean-my-xcode.sh is downloaded, just run it in the terminal with de command: 
+Once the clean-my-xcode.sh is downloaded, just run it in the terminal with the command: 
 
 ```sh
 chmod +x clean-my-xcode.sh; ./clean-my-xcode.sh
